@@ -16,6 +16,10 @@ Testing the webserver
 
 ## PROGRAM:
 ```
+from http.server import HTTPServer, BaseHTTPRequestHandler
+
+# HTML content with a list of the top 5 revenue-generating companies
+content = """
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,6 +36,20 @@ Testing the webserver
     </ol>
 </body>
 </html>
+"""
+
+class MyHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        print("Request received")
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html; charset=utf-8')
+        self.end_headers()
+        self.wfile.write(content.encode())
+
+server_address = ('', 80)
+httpd = HTTPServer(server_address, MyHandler)
+print("My webserver is running...")
+httpd.serve_forever()
 ```
 
 ## OUTPUT:
